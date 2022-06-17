@@ -24,7 +24,7 @@ const auth = getAuth(app);
 export const signInWithGoogle = () => signInWithPopup(auth, provider)
   .then((result) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    console.info('logadoo', credential)
+    window.location = '/receitas'
   }).catch((error) => {
     const credential = GoogleAuthProvider.credentialFromError(error);
     console.info('errou abextado', error, '-----', credential)
