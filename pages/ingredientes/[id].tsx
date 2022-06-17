@@ -7,8 +7,13 @@ import IngredientForm from './components/IngredientForm';
 
 const RULE = [{ required: true, message: 'Campo obrigatório' }]
 const { Option } = Select;
+export interface LayoutProps {
+  data: {
+    id: string
+  }
+}
 
-const Ingredient = (props) => {
+const Ingredient = (props: LayoutProps) => {
   const router = useRouter()
 
   const onFinish = async (values: any) => {
