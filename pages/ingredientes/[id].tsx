@@ -41,9 +41,13 @@ const Ingredient = (props: LayoutProps) => {
     </Wrapper>
   );
 }
-
-Ingredient.getInitialProps = async ({ query }) => {
-  const ref = doc(db, "ingredient", query.id);
+export interface InitialProp {
+  query: {
+    id: string
+  }
+}
+Ingredient.getInitialProps = async (prop: InitialProp) => {
+  const ref = doc(db, "ingredient", prop.query.id);
   const snap = await getDoc(ref);
   let data = {}
 
