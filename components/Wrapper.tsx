@@ -9,7 +9,11 @@ const MENU = [
   { title: 'Ingredientes', link: '/ingredientes' }
 ]
 
-const Wrapper: React.FC = ({ children }) => {
+export interface LayoutProps {
+  children: React.ReactNode
+}
+
+const Wrapper = (props: LayoutProps) => {
   const router = useRouter()
 
   return (
@@ -38,7 +42,7 @@ const Wrapper: React.FC = ({ children }) => {
         </Breadcrumb>
 
         <div className="site-layout-background" style={{ padding: 24 }}>
-          {children}
+          {props.children}
         </div>
       </Content>
 
