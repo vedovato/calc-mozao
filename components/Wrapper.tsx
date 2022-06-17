@@ -1,0 +1,52 @@
+import React from 'react';
+import { Breadcrumb, Layout, Menu } from 'antd';
+import { useRouter } from 'next/router'
+
+const { Header, Content, Footer } = Layout;
+
+const MENU = [
+  { title: 'Receitas', link: '/receitas' },
+  { title: 'Ingredientes', link: '/ingredientes' }
+]
+
+const Wrapper: React.FC = ({ children }) => {
+  const router = useRouter()
+
+  return (
+    <Layout style={{ height: "100vh" }}>
+      <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+        <div className="logo" />
+
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={['0']}
+          items={
+            MENU.map((item, key) => ({
+              label: item.title,
+              onClick: () => router.push(item.link),
+              key
+            }))}
+        />
+      </Header>
+
+      <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
+        <Breadcrumb style={{ margin: '16px 0' }}>
+          <Breadcrumb.Item>Home</Breadcrumb.Item>
+          <Breadcrumb.Item>List</Breadcrumb.Item>
+          <Breadcrumb.Item>App</Breadcrumb.Item>
+        </Breadcrumb>
+
+        <div className="site-layout-background" style={{ padding: 24 }}>
+          {children}
+        </div>
+      </Content>
+
+      <Footer style={{ textAlign: 'center' }}>
+        Precificador do Mozão ©2022
+      </Footer>
+    </Layout>
+  );
+}
+
+export default Wrapper;
