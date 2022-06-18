@@ -45,6 +45,7 @@ const IngredientForm = ({ onFinish, initialValues = {} }: IngredientFormProps) =
         <Select style={{ width: '100%' }}>
           <Option value="ml">ml</Option>
           <Option value="g">gramas</Option>
+          <Option value="un">unidade(s)</Option>
         </Select>
       </Form.Item>
 
