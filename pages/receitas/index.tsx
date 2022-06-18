@@ -1,12 +1,22 @@
-import type { NextPage } from 'next'
-import { db } from '../../firebase/clientApp'
-import { collection, DocumentData, getDocs } from "firebase/firestore"
-import { Button, Space, Table } from 'antd';
-import Wrapper from '../../components/Wrapper';
+import {
+  Button,
+  Space,
+  Table,
+} from 'antd';
+import {
+  collection,
+  DocumentData,
+  getDocs,
+} from 'firebase/firestore';
+import type { NextPage } from 'next';
 import Link from 'next/link';
-import { PlusCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
-import { Recipe } from './types/recipe';
+
+import { PlusCircleOutlined } from '@ant-design/icons';
+
+import Wrapper from '../../components/Wrapper';
+import { db } from '../../firebase/clientApp';
+import { Recipe } from '../../types/recipe.type';
 
 const Receitas: NextPage = (props: any) => {
   const data: Recipe[] = props?.data
@@ -18,7 +28,7 @@ const Receitas: NextPage = (props: any) => {
     {
       title: 'Ações',
       key: 'action',
-      render: (_: unknown, record: any) => (
+      render: (_: unknown, record: Recipe) => (
         <Space size="middle">
           <Link href={`/receitas/${record.key}`}>
             <a>Visualizar</a>

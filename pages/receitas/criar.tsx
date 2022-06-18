@@ -12,11 +12,11 @@ import { NextPage } from 'next/types';
 
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
-import RecipeForm from './components/RecipeForm';
 import {
   Recipe,
   RecipeIngredient,
-} from './types/recipe';
+} from '../../types/recipe.type';
+import RecipeForm from './components/RecipeForm';
 
 const NewRecipe: NextPage = (props: any) => {
   const [total, setTotal] = useState(0)

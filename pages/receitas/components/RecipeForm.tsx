@@ -12,8 +12,8 @@ import {
   PlusOutlined,
 } from '@ant-design/icons';
 
+import { RecipeFormProps } from '../../../types/recipe-form.type';
 import { calcularValor } from '../../../utils/calculo.util';
-import { RecipeFormProps } from '../types/recipe-form.type';
 
 const RULE = [{ required: true, message: 'Campo obrigatório' }]
 const { Option } = Select;

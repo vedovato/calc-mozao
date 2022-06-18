@@ -8,8 +8,8 @@ import { NextPage } from 'next/types';
 
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
+import { Ingredient } from '../../types/ingredient.type';
 import IngredientForm from './components/IngredientForm';
-import { Ingredient } from './types/ingredient';
 
 const CreateIngredient: NextPage = () => {
   const router = useRouter()

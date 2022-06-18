@@ -12,8 +12,8 @@ import {
 
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
+import { Ingredient } from '../../types/ingredient.type';
 import IngredientForm from './components/IngredientForm';
-import { Ingredient } from './types/ingredient';
 
 const EditIngredient: NextPage = (props: any) => {
   const router = useRouter()

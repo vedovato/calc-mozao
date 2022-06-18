@@ -17,10 +17,10 @@ import { NextPage } from 'next/types';
 
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
+import { Ingredient } from '../../types/ingredient.type';
+import { Recipe } from '../../types/recipe.type';
 import { calcularValor } from '../../utils/calculo.util';
-import { Ingredient } from '../ingredientes/types/ingredient';
 import RecipeForm from './components/RecipeForm';
-import { Recipe } from './types/recipe';
 
 const RecipePage: NextPage = (props: any) => {
   const [total, setTotal] = useState(0)

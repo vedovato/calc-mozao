@@ -7,7 +7,7 @@ import {
   Select,
 } from 'antd';
 
-import { IngredientFormProps } from '../types/ingredient-form.type';
+import { IngredientFormProps } from '../../../types/ingredient-form.type';
 
 const RULE = [{ required: true, message: 'Campo obrigatório' }]
 const { Option } = Select;

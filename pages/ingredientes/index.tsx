@@ -16,7 +16,7 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
-import { Ingredient } from './types/ingredient';
+import { Ingredient } from '../../types/ingredient.type';
 
 const COLUMNS = [
   { title: 'Ingrediente', dataIndex: 'name' },
