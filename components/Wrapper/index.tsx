@@ -51,17 +51,15 @@ const Wrapper = (props: LayoutProps) => {
   return (
     <Layout style={{ height: "100vh" }}>
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%', padding: 0 }}>
-        {/* <div className="logo" /> */}
-
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={['0']}
+          defaultSelectedKeys={[router.pathname]}
           items={
             MENU.map((item, key) => ({
               label: item.title,
               onClick: () => router.push(item.link),
-              key
+              key: item.link
             }))}
         />
       </Header>
