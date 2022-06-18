@@ -1,21 +1,24 @@
-import { signInWithGoogle, db } from '../../firebase/clientApp'
-import { addDoc, collection, query, where, getDocs } from "firebase/firestore"
+import type { NextPage } from 'next'
+import { db } from '../../firebase/clientApp'
+import { collection, DocumentData, getDocs } from "firebase/firestore"
 import { Button, Space, Table } from 'antd';
 import Wrapper from '../../components/Wrapper';
 import Link from 'next/link';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
+import { Recipe } from './types/recipe';
 
-const Receitas = ({ data }) => {
+const Receitas: NextPage = (props: any) => {
+  const data: Recipe[] = props?.data
   const router = useRouter()
 
   const columns = [
     { title: 'Receita', dataIndex: 'name', key: 'name' },
-    { title: 'Ingredientes', dataIndex: 'ingredients', key: 'ingredients', render: item => item.length },
+    { title: 'Ingredientes', dataIndex: 'ingredients', key: 'ingredients', render: (item: Array<DocumentData>) => item.length },
     {
       title: 'Ações',
       key: 'action',
-      render: (_, record) => (
+      render: (_: unknown, record: any) => (
         <Space size="middle">
           <Link href={`/receitas/${record.key}`}>
             <a>Visualizar</a>
@@ -28,7 +31,12 @@ const Receitas = ({ data }) => {
 
   return (
     <Wrapper>
-      <Button type="primary" shape="round" icon={<PlusCircleOutlined />} onClick={() => router.push('/receitas/criar')}>
+      <Button
+        type="primary"
+        shape="round"
+        icon={<PlusCircleOutlined />}
+        onClick={() => router.push('/receitas/criar')}
+      >
         Adicionar
       </Button>
 
@@ -41,8 +49,8 @@ export async function getStaticProps() {
   const ref = collection(db, "recipe");
   const querySnapshot = await getDocs(ref);
 
-  const data = []
-  querySnapshot.forEach((doc) => {
+  const data: Recipe[] = []
+  querySnapshot.forEach((doc: DocumentData) => {
     data.push({ key: doc.id, ...doc.data() })
   });
 

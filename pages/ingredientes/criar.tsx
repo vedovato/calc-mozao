@@ -1,17 +1,22 @@
-import { db } from '../../firebase/clientApp'
-import { addDoc, collection } from "firebase/firestore"
 import { notification } from 'antd';
-import Wrapper from '../../components/Wrapper';
-import { useRouter } from 'next/router'
-import IngredientForm from './components/IngredientForm';
+import {
+  addDoc,
+  collection,
+} from 'firebase/firestore';
+import { useRouter } from 'next/router';
+import { NextPage } from 'next/types';
 
-const Ingredient = (props) => {
+import Wrapper from '../../components/Wrapper';
+import { db } from '../../firebase/clientApp';
+import IngredientForm from './components/IngredientForm';
+import { Ingredient } from './types/ingredient';
+
+const CreateIngredient: NextPage = () => {
   const router = useRouter()
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: Ingredient) => {
     try {
       await addDoc(collection(db, "ingredient"), values);
-
       notification.success({ message: 'Ingrediente inserido!', });
       router.push('/ingredientes');
     } catch (e) {
@@ -27,4 +32,4 @@ const Ingredient = (props) => {
   );
 }
 
-export default Ingredient
+export default CreateIngredient

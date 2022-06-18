@@ -1,24 +1,26 @@
-import { db } from '../../firebase/clientApp'
-import { getDoc, doc, updateDoc } from "firebase/firestore"
-import { Button, Form, Input, notification, Select } from 'antd';
+import { notification } from 'antd';
+import {
+  doc,
+  getDoc,
+  updateDoc,
+} from 'firebase/firestore';
+import { useRouter } from 'next/router';
+import {
+  NextPage,
+  NextPageContext,
+} from 'next/types';
+
 import Wrapper from '../../components/Wrapper';
-import { useRouter } from 'next/router'
+import { db } from '../../firebase/clientApp';
 import IngredientForm from './components/IngredientForm';
+import { Ingredient } from './types/ingredient';
 
-const RULE = [{ required: true, message: 'Campo obrigatório' }]
-const { Option } = Select;
-export interface LayoutProps {
-  data: {
-    id: string
-  }
-}
-
-const Ingredient = (props: LayoutProps) => {
+const EditIngredient: NextPage = (props: any) => {
   const router = useRouter()
 
   const onFinish = async (values: any) => {
     try {
-      const docRef = doc(db, 'ingredient', props.data.id)
+      const docRef = doc(db, 'ingredient', props.ingredientId)
       await updateDoc(docRef, values);
 
       notification.success({ message: 'Ingrediente atualizado!', });
@@ -29,35 +31,24 @@ const Ingredient = (props: LayoutProps) => {
     }
   };
 
-  const onFinishFailed = (e: unknown) => {
-    notification.error({ message: 'Oops!', description: 'Verifique os campos e tente novamente...' });
-    console.error('ERROR:', JSON.stringify(e))
-
-  };
-
   return (
     <Wrapper>
-      <IngredientForm onFinish={onFinish} initialValues={props.data} />
+      <IngredientForm
+        onFinish={onFinish}
+        initialValues={props.ingredients}
+      />
     </Wrapper>
   );
 }
-export interface InitialProp {
-  query: {
-    id: string
-  }
-}
-Ingredient.getInitialProps = async (prop: InitialProp) => {
-  const ref = doc(db, "ingredient", prop.query.id);
-  const snap = await getDoc(ref);
-  let data = {}
 
-  if (snap.exists()) {
-    data = snap.data()
-    data.recipe = query.id
-    data.id = snap.id
-  }
+EditIngredient.getInitialProps = async (props: NextPageContext) => {
+  const ingredientId = String(props.query.id)
+  const snap = await getDoc(doc(db, "ingredient", ingredientId));
 
-  return { data }
+  let ingredients: Partial<Ingredient> = {}
+  if (snap.exists()) ingredients = snap.data()
+
+  return { ingredientId, ingredients }
 }
 
-export default Ingredient
+export default EditIngredient

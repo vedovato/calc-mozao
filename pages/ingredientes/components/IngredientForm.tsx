@@ -1,9 +1,18 @@
-import { Form, Input, InputNumber, Select, Button, notification } from "antd"
+import {
+  Button,
+  Form,
+  Input,
+  InputNumber,
+  notification,
+  Select,
+} from 'antd';
+
+import { IngredientFormProps } from '../types/ingredient-form.type';
 
 const RULE = [{ required: true, message: 'Campo obrigatório' }]
 const { Option } = Select;
 
-const IngredientForm = ({ onFinish, initialValues = {} }) => {
+const IngredientForm = ({ onFinish, initialValues = {} }: IngredientFormProps) => {
   const onFinishFailed = (e: unknown) => {
     notification.error({ message: 'Oops!', description: 'Verifique os campos e tente novamente...' });
     console.error('ERROR:', JSON.stringify(e))

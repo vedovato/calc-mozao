@@ -1,30 +1,40 @@
-import { useState, useEffect } from 'react';
-import { Button, Form, Input, notification, Select, Space } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { getDoc, doc, updateDoc, collection, getDocs } from "firebase/firestore"
-import { useRouter } from 'next/router'
-import { db } from '../../firebase/clientApp'
+import {
+  useEffect,
+  useState,
+} from 'react';
+
+import { notification } from 'antd';
+import {
+  collection,
+  doc,
+  DocumentData,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from 'firebase/firestore';
+import { useRouter } from 'next/router';
+import { NextPage } from 'next/types';
+
 import Wrapper from '../../components/Wrapper';
+import { db } from '../../firebase/clientApp';
 import { calcularValor } from '../../utils/calculo.util';
+import { Ingredient } from '../ingredientes/types/ingredient';
 import RecipeForm from './components/RecipeForm';
+import { Recipe } from './types/recipe';
 
-const RULE = [{ required: true, message: 'Campo obrigatório' }]
-const { Option } = Select;
-
-const Recipe = (props) => {
+const RecipePage: NextPage = (props: any) => {
   const [total, setTotal] = useState(0)
   const router = useRouter()
 
   useEffect(() => {
-    const val = calcularValor(props.data.ingredients, props.ingredients)
+    const { recipe, ingredients } = props
+    const val = calcularValor(recipe?.ingredients, ingredients)
     setTotal(val)
   }, [])
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: Recipe) => {
     try {
-      const docRef = doc(db, 'recipe', props.data.id)
-      await updateDoc(docRef, values);
-
+      await updateDoc(doc(db, 'recipe', props?.recipe?.key), values);
       notification.success({ message: 'Receita atualizada!', });
       router.push('/receitas');
     } catch (e) {
@@ -39,7 +49,7 @@ const Recipe = (props) => {
 
       <RecipeForm
         onFinish={onFinish}
-        initialValues={props.data}
+        initialValues={props.recipe}
         ingredients={props.ingredients}
         setTotal={setTotal}
       />
@@ -47,25 +57,25 @@ const Recipe = (props) => {
   );
 }
 
-Recipe.getInitialProps = async ({ query }) => {
-  const ref = doc(db, "recipe", query.id);
-  const snap = await getDoc(ref);
-  let data = {}
+RecipePage.getInitialProps = async (props) => {
+  const recipeId = String(props.query.id)
+  const recipeSnap = await getDoc(doc(db, "recipe", recipeId));
+  const recipe: Partial<Recipe> = {}
 
-  if (snap.exists()) {
-    data = snap.data()
-    data.id = snap.id
+  if (recipeSnap.exists()) {
+    recipe.name = recipeSnap.data().name
+    recipe.ingredients = recipeSnap.data().ingredients
+    recipe.key = recipeId
   }
 
-  const refx = collection(db, "ingredient");
-  const querySnapshotx = await getDocs(refx);
+  const ingredientSnap = await getDocs(collection(db, "ingredient"));
+  const ingredients: Ingredient[] = [];
 
-  const ingredients = []
-  querySnapshotx.forEach((doc) => {
-    ingredients.push({ key: doc.id, ...doc.data() })
+  ingredientSnap.forEach((snapshot: DocumentData) => {
+    ingredients.push({ key: snapshot.id, ...snapshot.data() })
   });
 
-  return { data, ingredients }
+  return { recipe, ingredients }
 }
 
-export default Recipe
+export default RecipePage

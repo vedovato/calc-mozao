@@ -1,13 +1,24 @@
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Form, Input, InputNumber, Select, Button, notification, Space } from "antd"
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../../firebase/clientApp";
-import { calcularValor } from "../../../utils/calculo.util";
+import {
+  Button,
+  Form,
+  Input,
+  notification,
+  Select,
+  Space,
+} from 'antd';
+
+import {
+  MinusCircleOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
+
+import { calcularValor } from '../../../utils/calculo.util';
+import { RecipeFormProps } from '../types/recipe-form.type';
 
 const RULE = [{ required: true, message: 'Campo obrigatório' }]
 const { Option } = Select;
 
-const RecipeForm = ({ onFinish, initialValues = {}, ingredients, setTotal }) => {
+const RecipeForm = ({ onFinish, initialValues = {}, ingredients, setTotal }: RecipeFormProps) => {
   const onFinishFailed = (e: unknown) => {
     notification.error({ message: 'Oops!', description: 'Verifique os campos e tente novamente...' });
     console.error('ERROR:', JSON.stringify(e))
@@ -93,42 +104,5 @@ const RecipeForm = ({ onFinish, initialValues = {}, ingredients, setTotal }) => 
     </Form>
   )
 }
-
-// export async function getStaticProps() {
-//   const refx = collection(db, "ingredient");
-//   const querySnapshotx = await getDocs(refx);
-
-//   const ingredients = []
-//   querySnapshotx.forEach((doc) => {
-//     ingredients.push({ key: doc.id, ...doc.data() })
-//   });
-
-//   console.info('ioajsiodjaiosdias', ingredients)
-
-//   return { ingredients }
-// }
-
-// RecipeForm.getInitialProps = async () => {
-//   // const ref = doc(db, "recipe", query.id);
-//   // const snap = await getDoc(ref);
-//   // let data = {}
-
-//   // if (snap.exists()) {
-//   //   data = snap.data()
-//   //   data.id = snap.id
-//   // }
-
-//   const refx = collection(db, "ingredient");
-//   const querySnapshotx = await getDocs(refx);
-
-//   const ingredients = []
-//   querySnapshotx.forEach((doc) => {
-//     ingredients.push({ key: doc.id, ...doc.data() })
-//   });
-
-//   console.info('ioajsiodjaiosdias', ingredients)
-
-//   return { ingredients }
-// }
 
 export default RecipeForm
