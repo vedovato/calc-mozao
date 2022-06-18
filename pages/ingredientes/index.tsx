@@ -20,10 +20,11 @@ import {
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
 import { Ingredient } from '../../types/ingredient.type';
+import { toReal } from '../../utils/calculo.util';
 
 const COLUMNS = [
   { title: 'Ingrediente', dataIndex: 'name' },
-  { title: 'Preço', dataIndex: 'price' },
+  { title: 'Preço', key: 'price', render: (item: Ingredient) => toReal(item.price) },
   {
     title: 'Quantidade', render: (_: unknown, record: Ingredient) => {
       return `${record.total_amount}${record.unity}`

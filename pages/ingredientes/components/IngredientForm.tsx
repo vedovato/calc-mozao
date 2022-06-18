@@ -34,7 +34,7 @@ const IngredientForm = ({ onFinish, initialValues = {} }: IngredientFormProps) =
       </Form.Item>
 
       <Form.Item label="Preço" name="price" rules={RULE} >
-        <InputNumber style={{ width: '100%' }} />
+        <InputNumber prefix="R$" style={{ width: '100%' }} />
       </Form.Item>
 
       <Form.Item label="Quantidade" name="total_amount" rules={RULE} >

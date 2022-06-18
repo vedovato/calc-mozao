@@ -58,7 +58,7 @@ const RecipeForm = ({ onFinish, initialValues = {}, ingredients, setTotal }: Rec
                   {...restField}
                   name={[name, 'id']}
                   label='Ingrediente'
-                  rules={[{ required: true, message: 'Missing first name' }]}
+                  rules={RULE}
                 >
                   <Select
                     showSearch
@@ -82,12 +82,12 @@ const RecipeForm = ({ onFinish, initialValues = {}, ingredients, setTotal }: Rec
                   {...restField}
                   label='Quantidade'
                   name={[name, 'amount']}
-                  rules={[{ required: true, message: 'Missing last name' }]}
+                  rules={RULE}
                 >
                   <Input type='number' placeholder="Last Name" />
                 </Form.Item>
 
-                <Form.Item label="Unidade" name={[name, 'unity']} rules={[{ required: true, message: 'Missing last name' }]} >
+                <Form.Item label="Unidade" name={[name, 'unity']} rules={RULE} >
                   <Select style={{ width: '100%' }}>
                     <Option value="ml">ml</Option>
                     <Option value="g">gramas</Option>
