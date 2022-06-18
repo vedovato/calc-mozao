@@ -10,6 +10,8 @@ import {
   NextPageContext,
 } from 'next/types';
 
+import { ArrowLeftOutlined } from '@ant-design/icons';
+
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
 import { Ingredient } from '../../types/ingredient.type';
@@ -17,6 +19,14 @@ import IngredientForm from './components/IngredientForm';
 
 const EditIngredient: NextPage = (props: any) => {
   const router = useRouter()
+
+  const BUTTONS = [
+    {
+      icon: <ArrowLeftOutlined />,
+      onClick: () => router.push('/ingredientes'),
+      label: 'Voltar'
+    }
+  ]
 
   const onFinish = async (values: any) => {
     try {
@@ -32,7 +42,7 @@ const EditIngredient: NextPage = (props: any) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper title={`Editar ${props.ingredients.name}`} renderButton={BUTTONS}>
       <IngredientForm
         onFinish={onFinish}
         initialValues={props.ingredients}

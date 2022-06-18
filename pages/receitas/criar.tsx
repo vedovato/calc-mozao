@@ -10,6 +10,9 @@ import {
 import { useRouter } from 'next/router';
 import { NextPage } from 'next/types';
 
+import { ArrowLeftOutlined } from '@ant-design/icons';
+
+import Custo from '../../components/Custo';
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
 import {
@@ -21,6 +24,14 @@ import RecipeForm from './components/RecipeForm';
 const NewRecipe: NextPage = (props: any) => {
   const [total, setTotal] = useState(0)
   const router = useRouter()
+
+  const BUTTONS = [
+    {
+      icon: <ArrowLeftOutlined />,
+      onClick: () => router.push('/receitas'),
+      label: 'Voltar'
+    }
+  ]
 
   const onFinish = async (values: Recipe) => {
     try {
@@ -34,8 +45,9 @@ const NewRecipe: NextPage = (props: any) => {
   };
 
   return (
-    <Wrapper>
-      <h1>{String(total)}</h1>
+    <Wrapper title='Nova Receita' renderButton={BUTTONS}>
+      <Custo total={total} />
+
       <RecipeForm
         onFinish={onFinish}
         setTotal={setTotal}

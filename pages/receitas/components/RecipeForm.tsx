@@ -13,7 +13,10 @@ import {
 } from '@ant-design/icons';
 
 import { RecipeFormProps } from '../../../types/recipe-form.type';
-import { calcularValor } from '../../../utils/calculo.util';
+import {
+  calcularCusto,
+  toReal,
+} from '../../../utils/calculo.util';
 
 const RULE = [{ required: true, message: 'Campo obrigatório' }]
 const { Option } = Select;
@@ -26,13 +29,17 @@ const RecipeForm = ({ onFinish, initialValues = {}, ingredients, setTotal }: Rec
 
   return (
     <Form
-      name="basic"
+      name="recipeForm"
       // labelCol={{ span: 4 }}
       // wrapperCol={{ span: 14 }}
+      layout='vertical'
       initialValues={initialValues}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      onValuesChange={(_, values) => setTotal(calcularValor(values.ingredients, ingredients))}
+      onValuesChange={(_, values) => {
+        const val: number = calcularCusto(values.ingredients, ingredients)
+        setTotal(toReal(val))
+      }}
       autoComplete="off"
     >
       <Form.Item label="Nome da Receita" name="name" rules={RULE} >
@@ -100,9 +107,9 @@ const RecipeForm = ({ onFinish, initialValues = {}, ingredients, setTotal }: Rec
         )}
       </Form.List>
 
-      <Form.Item wrapperCol={{ offset: 4, span: 8 }}>
-        <Button type="primary" htmlType="submit">
-          Salvar
+      <Form.Item>
+        <Button type="primary" shape='round' size='large' htmlType="submit">
+          Salvar Receita
         </Button>
       </Form.Item>
     </Form>

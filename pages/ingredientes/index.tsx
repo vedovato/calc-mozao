@@ -12,7 +12,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next/types';
 
-import { PlusCircleOutlined } from '@ant-design/icons';
+import {
+  EyeOutlined,
+  PlusCircleOutlined,
+} from '@ant-design/icons';
 
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
@@ -31,7 +34,7 @@ const COLUMNS = [
     render: (_: unknown, record: Ingredient) => (
       <Space size="middle">
         <Link href={`/ingredientes/${record.key}`}>
-          <a>Visualizar</a>
+          <Button type="primary" shape="circle" icon={<EyeOutlined />} />
         </Link>
       </Space>
     ),
@@ -41,17 +44,16 @@ const COLUMNS = [
 const Ingredients: NextPage = (props: any) => {
   const router = useRouter()
 
+  const BUTTONS = [
+    {
+      type: 'primary',
+      icon: <PlusCircleOutlined />,
+      onClick: () => router.push('/ingredientes/criar'),
+      label: 'Novo Ingrediente'
+    }
+  ]
   return (
-    <Wrapper>
-      <Button
-        type="primary"
-        shape="round"
-        icon={<PlusCircleOutlined />}
-        onClick={() => router.push('/ingredientes/criar')}
-      >
-        Adicionar
-      </Button>
-
+    <Wrapper title='Ingredientes' renderButton={BUTTONS}>
       <Table dataSource={props.ingredients} columns={COLUMNS} />
     </Wrapper>
   );

@@ -6,6 +6,8 @@ import {
 import { useRouter } from 'next/router';
 import { NextPage } from 'next/types';
 
+import { ArrowLeftOutlined } from '@ant-design/icons';
+
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
 import { Ingredient } from '../../types/ingredient.type';
@@ -13,6 +15,14 @@ import IngredientForm from './components/IngredientForm';
 
 const CreateIngredient: NextPage = () => {
   const router = useRouter()
+
+  const BUTTONS = [
+    {
+      icon: <ArrowLeftOutlined />,
+      onClick: () => router.push('/ingredientes'),
+      label: 'Voltar'
+    }
+  ]
 
   const onFinish = async (values: Ingredient) => {
     try {
@@ -26,7 +36,7 @@ const CreateIngredient: NextPage = () => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper title='Novo Ingrediente' renderButton={BUTTONS}>
       <IngredientForm onFinish={onFinish} />
     </Wrapper>
   );

@@ -15,22 +15,36 @@ import {
 import { useRouter } from 'next/router';
 import { NextPage } from 'next/types';
 
+import { ArrowLeftOutlined } from '@ant-design/icons';
+
+import Custo from '../../components/Custo';
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
 import { Ingredient } from '../../types/ingredient.type';
 import { Recipe } from '../../types/recipe.type';
-import { calcularValor } from '../../utils/calculo.util';
+import {
+  calcularCusto,
+  toReal,
+} from '../../utils/calculo.util';
 import RecipeForm from './components/RecipeForm';
 
 const RecipePage: NextPage = (props: any) => {
-  const [total, setTotal] = useState(0)
+  const [total, setTotal] = useState('0')
   const router = useRouter()
 
   useEffect(() => {
     const { recipe, ingredients } = props
-    const val = calcularValor(recipe?.ingredients, ingredients)
-    setTotal(val)
-  }, [])
+    const val: number = calcularCusto(recipe?.ingredients, ingredients)
+    setTotal(toReal(val))
+  }, [props])
+
+  const BUTTONS = [
+    {
+      icon: <ArrowLeftOutlined />,
+      onClick: () => router.push('/receitas'),
+      label: 'Voltar'
+    }
+  ]
 
   const onFinish = async (values: Recipe) => {
     try {
@@ -44,8 +58,8 @@ const RecipePage: NextPage = (props: any) => {
   };
 
   return (
-    <Wrapper>
-      <h1>{String(total)}</h1>
+    <Wrapper title={`Editar ${props.recipe.name}`} renderButton={BUTTONS}>
+      <Custo total={total} />
 
       <RecipeForm
         onFinish={onFinish}

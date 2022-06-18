@@ -20,9 +20,10 @@ const IngredientForm = ({ onFinish, initialValues = {} }: IngredientFormProps) =
 
   return (
     <Form
-      name="basic"
-      labelCol={{ span: 4 }}
-      wrapperCol={{ span: 8 }}
+      name='ingredientForm'
+      layout='vertical'
+      // labelCol={{ span: 4 }}
+      // wrapperCol={{ span: 8 }}
       onFinishFailed={onFinishFailed}
       initialValues={initialValues}
       onFinish={onFinish}
@@ -47,9 +48,9 @@ const IngredientForm = ({ onFinish, initialValues = {} }: IngredientFormProps) =
         </Select>
       </Form.Item>
 
-      <Form.Item wrapperCol={{ offset: 4, span: 8 }}>
-        <Button type="primary" htmlType="submit">
-          Salvar
+      <Form.Item>
+        <Button type="primary" shape='round' size='large' htmlType="submit">
+          Salvar Ingrediente
         </Button>
       </Form.Item>
     </Form>
