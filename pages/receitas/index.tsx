@@ -1,6 +1,5 @@
 import {
   Button,
-  Space,
   Table,
 } from 'antd';
 import {
@@ -12,29 +11,32 @@ import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { PlusCircleOutlined } from '@ant-design/icons';
+import {
+  EyeOutlined,
+  PlusCircleOutlined,
+} from '@ant-design/icons';
 
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
+import { Ingredient } from '../../types/ingredient.type';
 import { Recipe } from '../../types/recipe.type';
+import { calcularValor } from '../../utils/calculo.util';
 
 const Receitas: NextPage = (props: any) => {
-  const data: Recipe[] = props?.data
+  const data: Recipe[] = props?.recipes
   const router = useRouter()
 
   const columns = [
     { title: 'Receita', dataIndex: 'name', key: 'name' },
     { title: 'Ingredientes', dataIndex: 'ingredients', key: 'ingredients', render: (item: Array<DocumentData>) => item.length },
+    { title: 'Custo', key: 'price', render: (item: Recipe) => calcularValor(item.ingredients, props.ingredients) },
     {
       title: 'Ações',
       key: 'action',
       render: (_: unknown, record: Recipe) => (
-        <Space size="middle">
-          <Link href={`/receitas/${record.key}`}>
-            <a>Visualizar</a>
-          </Link>
-          <a>Editar</a>
-        </Space>
+        <Link href={`/receitas/${record.key}`}>
+          <Button type="primary" shape="circle" icon={<EyeOutlined />} />
+        </Link>
       ),
     },
   ]
@@ -46,6 +48,7 @@ const Receitas: NextPage = (props: any) => {
         shape="round"
         icon={<PlusCircleOutlined />}
         onClick={() => router.push('/receitas/criar')}
+        style={{ marginBottom: 30 }}
       >
         Adicionar
       </Button>
@@ -59,13 +62,20 @@ export async function getStaticProps() {
   const ref = collection(db, "recipe");
   const querySnapshot = await getDocs(ref);
 
-  const data: Recipe[] = []
+  const recipes: Recipe[] = []
   querySnapshot.forEach((doc: DocumentData) => {
-    data.push({ key: doc.id, ...doc.data() })
+    recipes.push({ key: doc.id, ...doc.data() })
+  });
+
+  const ingredientSnap = await getDocs(collection(db, "ingredient"));
+  const ingredients: Ingredient[] = [];
+
+  ingredientSnap.forEach((snapshot: DocumentData) => {
+    ingredients.push({ key: snapshot.id, ...snapshot.data() })
   });
 
   return {
-    props: { data }
+    props: { recipes, ingredients }
   }
 }
 

@@ -28,7 +28,7 @@ const RecipeForm = ({ onFinish, initialValues = {}, ingredients, setTotal }: Rec
     <Form
       name="basic"
       // labelCol={{ span: 4 }}
-      // wrapperCol={{ span: 8 }}
+      // wrapperCol={{ span: 14 }}
       initialValues={initialValues}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
@@ -43,10 +43,14 @@ const RecipeForm = ({ onFinish, initialValues = {}, ingredients, setTotal }: Rec
         {(fields, { add, remove }) => (
           <>
             {fields.map(({ key, name, ...restField }, iidx) => (
-              <Space key={`${key}-${iidx}`} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+              <Space
+                key={`${key}-${iidx}`}
+                style={{ display: 'flex', marginBottom: 7 }}
+                align="baseline">
                 <Form.Item
                   {...restField}
                   name={[name, 'id']}
+                  label='Ingrediente'
                   rules={[{ required: true, message: 'Missing first name' }]}
                 >
                   <Select
@@ -69,18 +73,18 @@ const RecipeForm = ({ onFinish, initialValues = {}, ingredients, setTotal }: Rec
 
                 <Form.Item
                   {...restField}
+                  label='Quantidade'
                   name={[name, 'amount']}
                   rules={[{ required: true, message: 'Missing last name' }]}
                 >
                   <Input type='number' placeholder="Last Name" />
                 </Form.Item>
 
-                <Form.Item
-                  {...restField}
-                  name={[name, 'unity']}
-                  rules={[{ required: true, message: 'Missing last name' }]}
-                >
-                  <Input placeholder="Last Name" />
+                <Form.Item label="Unidade" name={[name, 'unity']} rules={[{ required: true, message: 'Missing last name' }]} >
+                  <Select style={{ width: '100%' }}>
+                    <Option value="ml">ml</Option>
+                    <Option value="g">gramas</Option>
+                  </Select>
                 </Form.Item>
 
                 <MinusCircleOutlined onClick={() => remove(name)} />
