@@ -10,7 +10,10 @@ import {
 } from 'firebase/firestore';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { NextPage } from 'next/types';
+import {
+  NextPage,
+  NextPageContext,
+} from 'next/types';
 
 import {
   EyeOutlined,
@@ -60,7 +63,7 @@ const Ingredients: NextPage = (props: any) => {
   );
 }
 
-export async function getStaticProps() {
+Ingredients.getInitialProps = async (props: NextPageContext) => {
   const ref = collection(db, "ingredient")
   const ingredientSnap = await getDocs(ref);
   const ingredients: Ingredient[] = []
@@ -69,9 +72,7 @@ export async function getStaticProps() {
     ingredients.push({ key: doc.id, ...doc.data() })
   });
 
-  return {
-    props: { ingredients }
-  }
+  return { ingredients }
 }
 
 export default Ingredients
