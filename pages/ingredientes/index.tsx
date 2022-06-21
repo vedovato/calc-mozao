@@ -61,7 +61,8 @@ const Ingredients: NextPage = (props: any) => {
 }
 
 export async function getStaticProps() {
-  const ingredientSnap = await getDocs(collection(db, "ingredient"));
+  const ref = collection(db, "ingredient")
+  const ingredientSnap = await getDocs(ref);
   const ingredients: Ingredient[] = []
 
   ingredientSnap.forEach((doc: DocumentData) => {
