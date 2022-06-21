@@ -63,7 +63,7 @@ const Receitas: NextPage = (props: any) => {
   );
 }
 
-export async function getStaticProps() {
+Receitas.getInitialProps = async () => {
   const ref = collection(db, "recipe");
   const querySnapshot = await getDocs(ref);
 
@@ -79,9 +79,7 @@ export async function getStaticProps() {
     ingredients.push({ key: snapshot.id, ...snapshot.data() })
   });
 
-  return {
-    props: { recipes, ingredients }
-  }
+  return { recipes, ingredients }
 }
 
 export default Receitas
