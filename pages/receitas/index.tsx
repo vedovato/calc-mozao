@@ -26,8 +26,11 @@ import {
 } from '../../utils/calculo.util';
 
 const Receitas: NextPage = (props: any) => {
-  const data: Recipe[] = props?.recipes
   const router = useRouter()
+
+  const DATASOURCE: Recipe[] = props?.recipes.sort(
+    (a: Recipe, b: Recipe) => a.name.localeCompare(b.name)
+  )
 
   const BUTTONS = [
     {
@@ -58,7 +61,7 @@ const Receitas: NextPage = (props: any) => {
 
   return (
     <Wrapper title='Receitas' renderButton={BUTTONS}>
-      <Table dataSource={data} columns={COLUMNS} />
+      <Table dataSource={DATASOURCE} columns={COLUMNS} />
     </Wrapper>
   );
 }

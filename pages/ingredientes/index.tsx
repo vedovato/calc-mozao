@@ -48,6 +48,10 @@ const COLUMNS = [
 const Ingredients: NextPage = (props: any) => {
   const router = useRouter()
 
+  const DATASOURCE: Ingredient[] = props.ingredients.sort(
+    (a: Ingredient, b: Ingredient) => a.name.localeCompare(b.name)
+  )
+
   const BUTTONS = [
     {
       type: 'primary',
@@ -58,7 +62,7 @@ const Ingredients: NextPage = (props: any) => {
   ]
   return (
     <Wrapper title='Ingredientes' renderButton={BUTTONS}>
-      <Table dataSource={props.ingredients} columns={COLUMNS} />
+      <Table dataSource={DATASOURCE} columns={COLUMNS} />
     </Wrapper>
   );
 }
