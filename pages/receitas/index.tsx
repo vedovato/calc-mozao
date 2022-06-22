@@ -1,5 +1,7 @@
 import {
   Button,
+  Form,
+  Input,
   Table,
 } from 'antd';
 import {
@@ -14,6 +16,7 @@ import { useRouter } from 'next/router';
 import {
   EyeOutlined,
   PlusCircleOutlined,
+  SearchOutlined,
 } from '@ant-design/icons';
 
 import Wrapper from '../../components/Wrapper';
@@ -24,13 +27,21 @@ import {
   calcularCusto,
   toReal,
 } from '../../utils/calculo.util';
+import { useState } from 'react';
 
 const Receitas: NextPage = (props: any) => {
   const router = useRouter()
 
-  const DATASOURCE: Recipe[] = props?.recipes.sort(
-    (a: Recipe, b: Recipe) => a.name.localeCompare(b.name)
-  )
+  const sortedRecipes: Recipe[] = props?.recipes.sort((a: Recipe, b: Recipe) => a.name.localeCompare(b.name))
+  const [DATASOURCE, setDataSource] = useState(sortedRecipes)
+
+  const onValuesChange = (props: any) => {
+    if (!props.term) return setDataSource(sortedRecipes)
+    setDataSource(sortedRecipes.filter(item => {
+      const lower = item.name.toLowerCase()
+      return lower.includes(props.term.toLowerCase())
+    }))
+  }
 
   const BUTTONS = [
     {
@@ -61,6 +72,17 @@ const Receitas: NextPage = (props: any) => {
 
   return (
     <Wrapper title='Receitas' renderButton={BUTTONS}>
+      <Form onValuesChange={onValuesChange} autoComplete="on" style={{ width: '40%' }}>
+        <Form.Item name="term" >
+          <Input
+            prefix={<SearchOutlined />}
+            placeholder='Tá procurando algo Mozão?'
+            allowClear size='large'
+            style={{ borderRadius: 20 }}
+          />
+        </Form.Item>
+      </Form>
+
       <Table dataSource={DATASOURCE} columns={COLUMNS} />
     </Wrapper>
   );

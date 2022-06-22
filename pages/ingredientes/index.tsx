@@ -1,5 +1,9 @@
+import { useState } from 'react';
 import {
   Button,
+  Card,
+  Form,
+  Input,
   Space,
   Table,
 } from 'antd';
@@ -18,12 +22,14 @@ import {
 import {
   EyeOutlined,
   PlusCircleOutlined,
+  SearchOutlined,
 } from '@ant-design/icons';
 
 import Wrapper from '../../components/Wrapper';
 import { db } from '../../firebase/clientApp';
 import { Ingredient } from '../../types/ingredient.type';
 import { toReal } from '../../utils/calculo.util';
+import FormItemInput from 'antd/lib/form/FormItemInput';
 
 const COLUMNS = [
   { title: 'Ingrediente', dataIndex: 'name' },
@@ -48,9 +54,16 @@ const COLUMNS = [
 const Ingredients: NextPage = (props: any) => {
   const router = useRouter()
 
-  const DATASOURCE: Ingredient[] = props.ingredients.sort(
-    (a: Ingredient, b: Ingredient) => a.name.localeCompare(b.name)
-  )
+  const sortedIngredients: Ingredient[] = props.ingredients.sort((a: Ingredient, b: Ingredient) => a.name.localeCompare(b.name))
+  const [DATASOURCE, setDataSource] = useState(sortedIngredients)
+
+  const onValuesChange = (props: any) => {
+    if (!props.term) return setDataSource(sortedIngredients)
+    setDataSource(sortedIngredients.filter(item => {
+      const lower = item.name.toLowerCase()
+      return lower.includes(props.term.toLowerCase())
+    }))
+  }
 
   const BUTTONS = [
     {
@@ -60,10 +73,22 @@ const Ingredients: NextPage = (props: any) => {
       label: 'Novo Ingrediente'
     }
   ]
+
   return (
     <Wrapper title='Ingredientes' renderButton={BUTTONS}>
+      <Form onValuesChange={onValuesChange} autoComplete="on" style={{ width: '40%' }}>
+        <Form.Item name="term" >
+          <Input
+            prefix={<SearchOutlined />}
+            placeholder='Tá procurando algo Mozão?'
+            allowClear size='large'
+            style={{ borderRadius: 20 }}
+          />
+        </Form.Item>
+      </Form>
+
       <Table dataSource={DATASOURCE} columns={COLUMNS} />
-    </Wrapper>
+    </Wrapper >
   );
 }
 
