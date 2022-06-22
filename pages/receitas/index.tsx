@@ -60,6 +60,13 @@ const Receitas: NextPage = (props: any) => {
         toReal(calcularCusto(item.ingredients, props.ingredients))
     },
     {
+      title: 'Custo + iFood', key: 'priceIfood', render: (item: Recipe) => {
+        const cost = calcularCusto(item.ingredients, props.ingredients)
+        const comission = (cost * 27) / 100
+        return toReal(cost + comission)
+      }
+    },
+    {
       title: 'Ações',
       key: 'action',
       render: (_: unknown, record: Recipe) => (

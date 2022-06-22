@@ -49,7 +49,7 @@ const Wrapper = (props: LayoutProps) => {
   }
 
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout style={{ minHeight: "100vh" }}>
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%', padding: 0 }}>
         <Menu
           theme="dark"
